@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
 * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
 *
@@ -487,6 +487,8 @@ bool BattlepayManager::AlreadyOwnProduct(uint32 itemId) const
 	return false;
 }
 
+// 通过代码写死的分组过滤...
+
 auto GroupFilterForSession = [](uint32 groupId) -> bool
 {
 	switch (groupId)
@@ -617,18 +619,20 @@ void BattlepayManager::SendProductList()
 	response.Result = ProductListResult::Available;
 	response.ProductList.CurrencyID = GetShopCurrency();
 
+	// 给客户端发送产品分组
+
 	for (auto& itr : sBattlePayDataStore->GetProductGroups())
 	{
-		if (!player && !GroupFilterForSession(itr.GroupID))
+		if (!player && !GroupFilterForSession(itr.GroupID))	// 在这个地方过滤了分组 
 			continue;
 
 		WorldPackets::BattlePay::BattlePayProductGroup pGroup;
 		pGroup.GroupID = itr.GroupID;
 		pGroup.IconFileDataID = itr.IconFileDataID;
 		pGroup.Ordering = itr.Ordering;
-		pGroup.UnkInt = 0;
+		pGroup.UnkInt = 0;		// 这个有可能是标记是否能显示在角色界面？
 		pGroup.IsAvailableDescription = "";
-		pGroup.DisplayType = itr.DisplayType;
+		pGroup.DisplayType = itr.DisplayType;	
 
 		auto name = itr.Name;
 		if (auto productLocale = sBattlePayDataStore->GetProductGroupLocale(itr.GroupID))

@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
 * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
 *
@@ -377,7 +377,7 @@ namespace Battlepay
             Heirlooms = 12,
         };
     }
-
+	// 这个变量控制group是显示在游戏还是角色界面的吗？
     namespace BattlepayGroupDisplayType
     {
         enum : uint8
